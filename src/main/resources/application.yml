@@ -1,0 +1,47 @@
+server:
+  port: ${SERVER_PORT:8083}
+
+spring:
+  application:
+    name: buscador
+
+  datasource:
+    url: jdbc:h2:mem:buscador;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    defer-datasource-initialization: true
+
+  # ⚠️ OJO: `sql.init` va al nivel de `spring`, no dentro de `jpa`
+  sql:
+    init:
+      mode: always
+
+  # Elasticsearch dentro de Docker (NO usar localhost)
+  elasticsearch:
+    uris: https://li065uj69h:e6bfk1usqk@insignia-store-8005282907.us-east-1.bonsaisearch.net:443
+    connection-timeout: 5s
+    socket-timeout: 10s
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
